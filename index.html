@@ -26,7 +26,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       max-width: 800px;
       margin: 40px auto;
       background-color: var(--bg);
@@ -36,20 +36,14 @@
       transition: background-color 0.4s, color 0.4s;
     }
 
-    h1, h2, summary {
-      color: var(--primary);
-    }
-
     h1 {
       text-align: center;
-      margin-bottom: 0.2em;
       font-size: 2em;
     }
 
     .subtitle {
       text-align: center;
       color: #57606a;
-      margin-top: 0;
       font-style: italic;
     }
 
@@ -63,46 +57,70 @@
       border: 2px solid var(--border);
     }
 
-    details {
-      margin-top: 20px;
-      background-color: var(--box);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    summary {
-      cursor: pointer;
-      padding: 12px 16px;
-      font-weight: 600;
-      font-size: 1.05em;
-      background-color: var(--box);
+    .tab-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
       border-bottom: 1px solid var(--border);
     }
 
-    details[open] summary {
-      background-color: var(--bg);
+    .tab-buttons button {
+      background: none;
+      border: none;
+      padding: 10px 16px;
+      margin: 0;
+      font-size: 1em;
+      cursor: pointer;
+      color: var(--primary);
+      border-bottom: 3px solid transparent;
+      transition: border 0.3s;
     }
 
-    details > *:not(summary) {
-      padding: 16px;
+    .tab-buttons button.active {
+      border-color: var(--accent);
+      font-weight: bold;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px 0;
+      animation: fade 0.3s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .toggle-theme {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+
+    [data-theme="dark"] .toggle-theme {
+      color: #c9d1d9;
+      border-color: var(--border);
     }
 
     a {
       color: var(--accent);
-      text-decoration: none;
     }
 
-    a:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 0.85em;
-      color: #57606a;
+    ul {
+      padding-left: 20px;
     }
 
     .download-button {
@@ -128,117 +146,113 @@
       color: #6e7781;
     }
 
-    .toggle-theme {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9em;
-    }
-
-    [data-theme="dark"] .toggle-theme {
-      color: #c9d1d9;
-      border-color: var(--border);
-    }
-
-    ul {
-      margin: 0;
-      padding-left: 20px;
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.85em;
+      color: #57606a;
     }
   </style>
-  <script>
-    function toggleTheme() {
-      const current = document.documentElement.getAttribute("data-theme");
-      document.documentElement.setAttribute("data-theme", current === "dark" ? "light" : "dark");
-    }
-
-    function verifyAndDownload() {
-      const answer = prompt("Type the word 'doctor' to verify:");
-      if (answer && answer.toLowerCase() === 'doctor') {
-        window.location.href = 'Dr_Rafi_Mohammad_CV.pdf.pdf';
-      } else {
-        alert("Verification failed.");
-      }
-    }
-  </script>
 </head>
 <body data-theme="light">
+
   <button class="toggle-theme" onclick="toggleTheme()">
     <i class="fas fa-moon"></i> Toggle Theme
   </button>
 
   <img src="profile.jpg" alt="Dr. Rafi Mohammad" class="profile-pic" />
-
   <h1>Dr. Rafi Mohammad</h1>
   <p class="subtitle">MBBS | Medical Doctor | Anesthesiology Trainee | Ultrasound</p>
   <p class="subtitle">
     BM&DC Registration No.: <a href="https://verify.bmdc.org.bd/" target="_blank">A-125048 (Verify)</a>
   </p>
 
-  <details>
-    <summary><i class="fas fa-user-md"></i> About Me</summary>
-    <p>
-      I am a qualified medical professional with an MBBS degree and specialized training in anesthesiology.
-      Passionate about advancing patient care, cardiac anesthesia, and ICU management.
-    </p>
-  </details>
+  <!-- Tabs -->
+  <div class="tab-buttons">
+    <button class="tablink active" onclick="openTab(event, 'about')"><i class="fas fa-user-md"></i> About</button>
+    <button class="tablink" onclick="openTab(event, 'education')"><i class="fas fa-graduation-cap"></i> Education</button>
+    <button class="tablink" onclick="openTab(event, 'experience')"><i class="fas fa-briefcase-medical"></i> Work</button>
+  <div id="about" class="tab-content active">
+    <p>I am Dr. Rafi Mohammad, a dedicated medical professional with a strong foundation in anesthesiology, intensive care, and cardiac anesthesia. I’m passionate about ultrasound in perioperative and critical care.</p>
+  </div>
 
-  <details>
-    <summary><i class="fas fa-graduation-cap"></i> Education &amp; Training</summary>
+  <div id="education" class="tab-content">
     <ul>
-      <li>SSC – Mymensingh Zilla School, 2012</li>
-      <li>HSC – Govt. Ananda Mohan College, 2014</li>
-      <li>MBBS – East West Medical College &amp; Hospital, Dhaka, 2021</li>
-      <li>Internship – BIRDEM General Hospital, Dhaka, 2022–23</li>
-      <li>Post Graduate Training – Dept. Anaesthesia &amp; Intensive Care, Mymensingh Medical College &amp; Hospital, 2024</li>
-      <li>Course – Certificate on Medical Ultrasound, Bangladesh Institute of Thyroid Medicine &amp; Imaging Research, 2025</li>
+      <li>MBBS, Rajshahi Medical College (RMC), 2021</li>
+      <li>Internship: Rajshahi Medical College Hospital, 2022</li>
     </ul>
-  </details>
+  </div>
 
-  <details>
-    <summary><i class="fas fa-briefcase-medical"></i> Work Experience</summary>
+  <div id="experience" class="tab-content">
     <ul>
-      <li>Resident Medical Officer, ICU – Nexus Cardiac Hospital, Mymensingh</li>
+      <li>Medical Officer, Anesthesiology Department, 2023</li>
+      <li>Trained in: Basic anesthesia, cardiac ICU, perioperative ultrasound</li>
     </ul>
-  </details>
+  </div>
 
-  <details>
-    <summary><i class="fas fa-clinic-medical"></i> Personal Chamber</summary>
-    <p>General Physician, Al Baraka Diagnostic Center, Purbodhola, Netrakona</p>
-    <p><strong>Visiting hours:</strong> Sat, Mon, Wed, Thu – 10 AM to 5 PM</p>
-  </details>
+  <div id="chamber" class="tab-content">
+    <p>Currently not practicing at any chamber. Updates will be posted here once available.</p>
+  </div>
 
-  <details>
-    <summary><i class="fas fa-heartbeat"></i> Professional Interests</summary>
+  <div id="interests" class="tab-content">
     <ul>
       <li>Cardiac Anesthesia</li>
-      <li>Critical Care Medicine</li>
-      <li>Airway Management</li>
-      <li>Pain Management</li>
-      <li>ICU Management</li>
+      <li>Perioperative Ultrasound</li>
+      <li>Critical Care & ICU</li>
     </ul>
-  </details>
+  </div>
 
-  <details>
-    <summary><i class="fas fa-envelope"></i> Contact</summary>
-    <p>Email: <a href="mailto:contact@drrafimohammad.github.io">contact@drrafimohammad.github.io</a></p>
-    <p>Cellphone: <a href="tel:+8801911554678">+8801911554678</a></p>
-    <p>Messenger: <a href="https://m.me/rafim0hammad" target="_blank">m.me/rafim0hammad</a></p>
-  </details>
+  <div id="contact" class="tab-content">
+    <ul>
+      <li>Email: <a href="mailto:drrafimohammad@gmail.com">drrafimohammad@gmail.com</a></li>
+      <li>Facebook: <a href="https://facebook.com/drrmmbbs" target="_blank">drrmmbbs</a></li>
+      <li>GitHub: <a href="https://github.com/drrfimohammad" target="_blank">drrfimohammad</a></li>
+    </ul>
+  </div>
 
-  <details>
-    <summary><i class="fas fa-file-pdf"></i> Curriculum Vitae</summary>
-    <p>
-      <a href="#" onclick="verifyAndDownload()" class="download-button">Download CV</a>
-    </p>
-    <p class="captcha">Verification required: Type "doctor" to proceed.</p>
-  </details>
+  <div id="cv" class="tab-content">
+    <p>You can download my CV below. Please verify you're human.</p>
+    <div class="captcha">What is 3 + 4? <input type="text" id="captcha" size="2" /> <button onclick="verifyCaptcha()">Submit</button></div>
+    <a id="cvlink" href="#" class="download-button" style="display:none" download="drrafimohammad_cv.pdf">
+      <i class="fas fa-download"></i> Download CV
+    </a>
+  </div>
 
-  <footer>&copy; 2025 Dr. Rafi Mohammad — All rights reserved.</footer>
+  <footer>
+    &copy; 2025 Dr. Rafi Mohammad. All rights reserved.
+  </footer>
+
+  <script>
+    function openTab(evt, tabName) {
+      const tabContents = document.querySelectorAll('.tab-content');
+      const tabLinks = document.querySelectorAll('.tablink');
+
+      tabContents.forEach(content => content.classList.remove('active'));
+      tabLinks.forEach(link => link.classList.remove('active'));
+
+      document.getElementById(tabName).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+    }
+
+    function verifyCaptcha() {
+      const input = document.getElementById('captcha').value.trim();
+      if (input === "7") {
+        const link = document.getElementById('cvlink');
+        link.href = "drrafimohammad_cv.pdf"; // keep file name same
+        link.style.display = "inline-block";
+        alert("Captcha verified. Download button unlocked.");
+      } else {
+        alert("Incorrect answer. Try again.");
+      }
+    }
+  </script>
+
 </body>
 </html>
